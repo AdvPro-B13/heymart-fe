@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Navbar from '../../components/navbar';
 import withAuth from '../../components/withAuth';
 
 const Dashboard = () => {
@@ -29,8 +30,11 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-black py-2">
-            <h1 className="text-4xl text-white mb-6">RAFLI WIBU</h1>
+        <div>
+            <Navbar />
+            <div className="flex flex-col items-center justify-center min-h-screen bg-black py-2">
+                <h1 className="text-4xl text-white mb-6">Dashboard</h1>
+            </div>
         </div>
     );
 };
