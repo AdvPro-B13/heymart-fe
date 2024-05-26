@@ -14,7 +14,7 @@ export default function Login() {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_AUTH_BASE_URL}/check-token`, {
+                    const res = await fetch('http://34.142.195.221/api/auth/check-token', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default function Login() {
         try {
             console.log('Logging in with username:', username); // Log the username
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_AUTH_BASE_URL}/login`, {
+            const res = await fetch('http://34.142.195.221/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
