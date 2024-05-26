@@ -21,7 +21,7 @@ export const CouponProvider = ({ children }) => {
         }
     }, [activeCoupon]);
 
-    const useCoupon = (coupon) => {
+    const equipCoupon = (coupon) => {
         setActiveCoupon(coupon);
     };
 
@@ -30,7 +30,7 @@ export const CouponProvider = ({ children }) => {
     };
 
     return (
-        <CouponContext.Provider value={{ activeCoupon, useCoupon, cancelCoupon }}>
+        <CouponContext.Provider value={{ activeCoupon, equipCoupon, cancelCoupon }}>
             {children}
         </CouponContext.Provider>
     );

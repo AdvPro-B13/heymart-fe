@@ -2,13 +2,13 @@
 import { useCouponContext } from '../context/CouponContext';
 
 const CouponCard = ({ coupon }) => {
-    const { activeCoupon, useCoupon, cancelCoupon } = useCouponContext();
+    const { activeCoupon, equipCoupon, cancelCoupon } = useCouponContext();
 
     const handleUseClick = () => {
         if (activeCoupon && activeCoupon.id === coupon.id) {
             cancelCoupon();
         } else {
-            useCoupon(coupon);
+            equipCoupon(coupon);
         }
     };
 

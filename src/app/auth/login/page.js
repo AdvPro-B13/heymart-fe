@@ -91,7 +91,7 @@ export default function Login() {
                     Login
                 </button>
             </form>
-            <p className="text-white mt-4">Don't have an account? <button className="text-blue-500 hover:text-blue-700" onClick={() => router.push('/auth/register')}>Register</button></p>
+            <p className="text-white mt-4">Don&apos;t have an account? <button className="text-blue-500 hover:text-blue-700" onClick={() => router.push('/auth/register')}>Register</button></p>
         </div>
     );
 }

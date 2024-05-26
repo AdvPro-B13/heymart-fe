@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CouponCard from '../../../components/CouponCard';
 import Navbar from '../../../components/Navbar';
 
@@ -11,7 +11,7 @@ const CouponPage = ({ params }) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-    const fetchCoupons = async () => {
+    const fetchCoupons = useCallback(async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             router.push('/auth/login');
@@ -36,9 +36,9 @@ const CouponPage = ({ params }) => {
         } catch (error) {
             console.error('Error fetching coupons', error);
         }
-    };
+    }, [supermarketId]);
 
-    const fetchUsedCoupons = async () => {
+    const fetchUsedCoupons = useCallback(async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             router.push('/auth/login');
@@ -62,14 +62,14 @@ const CouponPage = ({ params }) => {
         } catch (error) {
             console.error('Error fetching used coupons', error);
         }
-    };
+    }, [supermarketId]);
 
     useEffect(() => {
         if (supermarketId) {
             fetchCoupons();
             fetchUsedCoupons();
         }
-    }, [supermarketId]);
+    }, [supermarketId, fetchCoupons, fetchUsedCoupons]);
 
     const handleUseCoupon = (coupon) => {
         if (activeCoupon) {
