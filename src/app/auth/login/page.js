@@ -8,6 +8,8 @@ export default function Login() {
     const router = useRouter();
 
     useEffect(() => {
+        console.log('API Auth Base URL:', process.env.NEXT_PUBLIC_API_AUTH_BASE_URL); // Log the environment variable
+
         const checkTokenValidity = async () => {
             const token = localStorage.getItem('token');
             if (token) {
@@ -19,6 +21,8 @@ export default function Login() {
                             'Authorization': `Bearer ${token}`,
                         },
                     });
+
+                    console.log('Token validity response:', res); // Log the response
 
                     if (res.ok) {
                         router.push('/dashboard');
@@ -39,6 +43,8 @@ export default function Login() {
         event.preventDefault();
 
         try {
+            console.log('Logging in with username:', username); // Log the username
+
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_AUTH_BASE_URL}/login`, {
                 method: 'POST',
                 headers: {
@@ -51,6 +57,8 @@ export default function Login() {
             });
 
             const data = await res.json();
+
+            console.log('Login response:', data); // Log the response
 
             if (!res.ok) {
                 throw new Error(data.message || 'Login failed');
