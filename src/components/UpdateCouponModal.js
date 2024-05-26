@@ -20,8 +20,8 @@ export default function UpdateCouponModal({ coupon, onClose, onUpdate }) {
         };
 
         const endpoint = coupon.minTransaction !== undefined
-            ? 'http://localhost:8080/api/transaction-coupon/update'
-            : 'http://localhost:8080/api/product-coupon/update';
+            ? `${process.env.NEXT_PUBLIC_API_TRANSACTION_COUPON_BASE_URL}/update`
+            : `${process.env.NEXT_PUBLIC_API_PRODUCT_COUPON_BASE_URL}/update`;
 
         try {
             const token = localStorage.getItem('token');

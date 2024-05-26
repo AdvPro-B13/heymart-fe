@@ -12,7 +12,7 @@ const withAuth = (WrappedComponent) => {
                 const token = localStorage.getItem('token');
                 if (token) {
                     try {
-                        const res = await fetch('http://localhost:8081/api/user/get', {
+                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_USER_BASE_URL}/get`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',

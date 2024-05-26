@@ -17,6 +17,7 @@ export default function CreateCoupon() {
     useEffect(() => {
         const fetchSupermarketId = async () => {
             const token = localStorage.getItem('token');
+            console.log('Token:', token); // Log the token
             if (!token) {
                 router.push('/auth/login');
                 return;
@@ -36,7 +37,8 @@ export default function CreateCoupon() {
                     console.log('User data:', userData);
                     setSupermarketId(userData.supermarketId);
                 } else {
-                    console.error('Failed to fetch user data');
+                    const errorData = await res.text();
+                    console.error('Failed to fetch user data:', errorData);
                 }
             } catch (error) {
                 console.error('Error fetching data', error);
@@ -45,11 +47,12 @@ export default function CreateCoupon() {
 
         const verifyAccess = async () => {
             const token = localStorage.getItem('token');
+            console.log('Token for verification:', token); // Log the token
             if (!token) {
                 router.push('/auth/login');
                 return;
             }
-        
+
             try {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_AUTH_BASE_URL}/verify`, {
                     method: 'POST',
@@ -61,19 +64,22 @@ export default function CreateCoupon() {
                         action: 'coupon:create'
                     }),
                 });
-        
+
                 const resultText = await res.text();
-        
+                console.log('Verification response:', resultText); // Log the response
+
                 if (res.ok) {
                     setAccessStatus(resultText);
                     if (resultText !== 'Authorized') {
-                        router.push('/dashboard'); 
+                        router.push('/dashboard');
                     }
                 } else {
                     setAccessStatus('Unauthorized');
+                    console.error('Verification failed:', resultText); // Log the failure reason
                     router.push('/dashboard');
                 }
             } catch (error) {
+                console.error('Error verifying access:', error);
                 setAccessStatus('Unauthorized');
                 router.push('/dashboard');
             }
@@ -105,8 +111,8 @@ export default function CreateCoupon() {
 
         try {
             const token = localStorage.getItem('token');
-            console.log('Request body:', body);
-            console.log('Token:', token);
+            console.log('Request body:', body); // Log the request body
+            console.log('Token for create:', token); // Log the token
             const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
@@ -118,7 +124,7 @@ export default function CreateCoupon() {
 
             if (!res.ok) {
                 const errorData = await res.text();
-                console.error('Failed to create coupon:', errorData);
+                console.error('Failed to create coupon:', errorData, token, body.supermarketId);
                 throw new Error(errorData || 'Failed to create coupon');
             }
 
