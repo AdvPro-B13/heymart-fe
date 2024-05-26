@@ -31,3 +31,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.coupon-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
