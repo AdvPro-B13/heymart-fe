@@ -45,7 +45,7 @@ export default function Login() {
         try {
             console.log('Logging in with username:', username); // Log the username
 
-            const res = await fetch('http://34.142.195.221/api/auth/login', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_AUTH_BASE_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

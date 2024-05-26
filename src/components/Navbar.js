@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [role, setRole] = useState('');
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [showProductDropdown, setShowProductDropdown] = useState(false);
+    const [showCouponDropdown, setShowCouponDropdown] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -65,20 +66,32 @@ const Navbar = () => {
                         </button>
                         {role === 'MANAGER' && (
                             <>
-                                <button 
-                                    onClick={() => router.push('/manager/products')}
-                                    className="text-white hover:text-gray-400"
-                                >
-                                    List Product
-                                </button>
                                 <div className="relative inline-block">
                                     <button 
-                                        onClick={() => setShowDropdown(!showDropdown)}
+                                        onClick={() => setShowProductDropdown(!showProductDropdown)}
+                                        className="text-white hover:text-gray-400"
+                                    >
+                                        Manage Products
+                                    </button>
+                                    {showProductDropdown && (
+                                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+                                            <Link href="/manager/products" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                                Manage All Products
+                                            </Link>
+                                            <Link href="/manager/products/supermarket" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                                Search by supermarket
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="relative inline-block">
+                                    <button 
+                                        onClick={() => setShowCouponDropdown(!showCouponDropdown)}
                                         className="text-white hover:text-gray-400"
                                     >
                                         List Coupon
                                     </button>
-                                    {showDropdown && (
+                                    {showCouponDropdown && (
                                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
                                             <Link href="/manager/transaction-coupons" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                                 Transaction Coupons
