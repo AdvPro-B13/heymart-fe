@@ -1,15 +1,19 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import CouponCard from '../../../components/CouponCard';
 import Navbar from '../../../components/Navbar';
+import { useCouponContext } from '../../../context/CouponContext';
 
 const CouponPage = ({ params }) => {
     const { supermarketId } = params;
+    const router = useRouter();
+    const { activeCoupon, equipCoupon, cancelCoupon } = useCouponContext();
     const [coupons, setCoupons] = useState([]);
     const [usedCoupons, setUsedCoupons] = useState([]);
-    const [activeCoupon, setActiveCoupon] = useState(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
+    const [totalAmount, setTotalAmount] = useState(100000);
 
     const fetchCoupons = useCallback(async () => {
         const token = localStorage.getItem('token');
@@ -36,7 +40,7 @@ const CouponPage = ({ params }) => {
         } catch (error) {
             console.error('Error fetching coupons', error);
         }
-    }, [supermarketId]);
+    }, [supermarketId, router]);
 
     const fetchUsedCoupons = useCallback(async () => {
         const token = localStorage.getItem('token');
@@ -62,7 +66,7 @@ const CouponPage = ({ params }) => {
         } catch (error) {
             console.error('Error fetching used coupons', error);
         }
-    }, [supermarketId]);
+    }, [supermarketId, router]);
 
     useEffect(() => {
         if (supermarketId) {
@@ -76,12 +80,26 @@ const CouponPage = ({ params }) => {
             setSelectedCoupon(coupon);
             setShowConfirmation(true);
         } else {
-            setActiveCoupon(coupon);
+            equipCoupon(coupon);
+            calculateTotalWithDiscount(coupon);
         }
     };
 
+    const calculateTotalWithDiscount = (coupon) => {
+        let discount = 0;
+        if (coupon.percentDiscount) {
+            discount += (totalAmount * coupon.percentDiscount) / 100;
+        }
+        if (coupon.fixedDiscount) {
+            discount += coupon.fixedDiscount;
+        }
+        discount = Math.min(discount, coupon.maxDiscount);
+        setTotalAmount(100000 - discount);
+    };
+
     const handleConfirmChange = () => {
-        setActiveCoupon(selectedCoupon);
+        equipCoupon(selectedCoupon);
+        calculateTotalWithDiscount(selectedCoupon);
         setShowConfirmation(false);
         setSelectedCoupon(null);
     };
@@ -91,8 +109,8 @@ const CouponPage = ({ params }) => {
         setSelectedCoupon(null);
     };
 
-    const handleCancelCoupon = () => {
-        setActiveCoupon(null);
+    const handleOkClick = () => {
+        router.push(`/supermarket/${supermarketId}/cart`);
     };
 
     const filteredCoupons = coupons.filter(coupon => !usedCoupons.includes(coupon.id));
@@ -105,8 +123,12 @@ const CouponPage = ({ params }) => {
                 {activeCoupon && (
                     <div className="bg-gray-700 text-white p-4 rounded-lg mb-6">
                         <h3>Using Coupon: {activeCoupon.id}</h3>
-                        <button onClick={handleCancelCoupon} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
+                        <p>Total after discount: Rp{activeCoupon.percentDiscount}</p>
+                        <button onClick={cancelCoupon} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
                             Cancel Coupon
+                        </button>
+                        <button onClick={handleOkClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2">
+                            OK
                         </button>
                     </div>
                 )}
