@@ -1,6 +1,7 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Navbar from '../../../components/Navbar';
 import UpdateCouponModal from '../../../components/UpdateCouponModal';
 
@@ -14,7 +15,7 @@ export default function ListTransactionCoupon() {
     const [accessStatus, setAccessStatus] = useState('');
     const router = useRouter();
 
-    const fetchCoupons = async () => {
+    const fetchCoupons = useCallback(async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             router.push('/auth/login');
@@ -57,9 +58,9 @@ export default function ListTransactionCoupon() {
         } catch (error) {
             console.error('Error fetching data', error);
         }
-    };
+    }, [router]);
 
-    const verifyAccess = async () => {
+    const verifyAccess = useCallback(async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             router.push('/auth/login');
@@ -93,12 +94,12 @@ export default function ListTransactionCoupon() {
             setAccessStatus('Unauthorized');
             router.push('/dashboard');
         }
-    };
+    }, [router]);
 
     useEffect(() => {
         verifyAccess();
         fetchCoupons();
-    }, [router]);
+    }, [router, verifyAccess, fetchCoupons]);
 
     useEffect(() => {
         setFilteredCoupons(
