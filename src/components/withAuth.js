@@ -1,24 +1,30 @@
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const withAuth = (WrappedComponent) => {
     return (props) => {
         const router = useRouter();
+        const [role, setRole] = useState('');
+        const [lastname, setLastname] = useState('');
 
         useEffect(() => {
             const checkTokenValidity = async () => {
                 const token = localStorage.getItem('token');
                 if (token) {
                     try {
-                        const res = await fetch('http://localhost:8081/api/auth/check-token', {
-                            method: 'POST',
+                        const res = await fetch('http://localhost:8081/api/user/get', {
+                            method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Authorization': `Bearer ${token}`,
                             },
                         });
 
-                        if (!res.ok) {
+                        if (res.ok) {
+                            const data = await res.json();
+                            setRole(data.role);
+                            setLastname(data.lastname);
+                        } else {
                             localStorage.removeItem('token');
                             router.push('/auth/login');
                         }
@@ -35,7 +41,7 @@ const withAuth = (WrappedComponent) => {
             checkTokenValidity();
         }, [router]);
 
-        return <WrappedComponent {...props} />;
+        return <WrappedComponent {...props} role={role} lastname={lastname} />;
     };
 };
 

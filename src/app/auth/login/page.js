@@ -12,7 +12,7 @@ export default function Login() {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const res = await fetch('http://localhost:8081/api/auth/check-token', {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_AUTH_BASE_URL}/check-token`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default function Login() {
         event.preventDefault();
 
         try {
-            const res = await fetch('http://localhost:8081/api/auth/login', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_AUTH_BASE_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export default function Login() {
             }
 
             localStorage.setItem('token', data.token);
-            router.push('/dashboard'); // arahkan ke halaman dashboard setelah login berhasil
+            router.push('/dashboard'); 
         } catch (error) {
             alert(error.message);
         }
