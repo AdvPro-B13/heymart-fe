@@ -64,6 +64,28 @@ const Navbar = () => {
                         >
                             Dashboard
                         </button>
+                        {role === 'CUSTOMER' && (
+                            <>
+                                <div className="relative inline-block">
+                                    <button 
+                                        onClick={() => setShowProductDropdown(!showProductDropdown)}
+                                        className="text-white hover:text-gray-400"
+                                    >
+                                        Products List
+                                    </button>
+                                    {showProductDropdown && (
+                                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+                                            <Link href="/customer/products" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                                View All Products
+                                            </Link>
+                                            <Link href="/customer/products/supermarket" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                                Search by supermarket
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
                         {role === 'MANAGER' && (
                             <>
                                 <div className="relative inline-block">
