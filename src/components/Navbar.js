@@ -126,6 +126,14 @@ const Navbar = () => {
                                 </div>
                             </>
                         )}
+                        {role === 'CUSTOMER' && (
+                            <button 
+                                onClick={() => router.push('/supermarket')}
+                                className="text-white hover:text-gray-400"
+                            >
+                                Supermarket
+                            </button>
+                        )}
                         <button 
                             onClick={handleLogout}
                             className="text-white hover:text-gray-400"
