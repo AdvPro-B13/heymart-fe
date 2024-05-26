@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const withAuth = (WrappedComponent) => {
-    return (props) => {
+    const WithAuth = (props) => {
         const router = useRouter();
         const [role, setRole] = useState('');
         const [lastname, setLastname] = useState('');
@@ -43,6 +43,14 @@ const withAuth = (WrappedComponent) => {
 
         return <WrappedComponent {...props} role={role} lastname={lastname} />;
     };
+
+    WithAuth.displayName = `WithAuth(${getDisplayName(WrappedComponent)})`;
+
+    return WithAuth;
 };
+
+function getDisplayName(WrappedComponent) {
+    return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
 
 export default withAuth;
